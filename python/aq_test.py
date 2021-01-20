@@ -10,9 +10,12 @@ ser = serial.Serial("/dev/ttyS0", 9600)
 
 def wait_for_message():
     global temp, e_co2
-    incoming_message = str(ser.readline()[:-2].decode("utf-8"))  # remove LF, CR
- turn into string
+    time.sleep(0.1) # give attiny time to respond
+    t0=time.monotonic()
+    incoming_message = str(ser.readline()[:-2].decode("utf-8"))  # remove LF, CR turn into string
 #    print("incoming_message: " + incoming_message)
+    t1=time.monotonic()
+    print(t1-t0)
     message_parts = incoming_message.split("=")
     if len(message_parts) == 2:
         code, value = message_parts
@@ -31,6 +34,7 @@ def update_readings():
     while True:
         ser.write(b"t\n")
         wait_for_message()
+        time.sleep(0.1) # give attiny time to respond
         ser.write(b"c\n")
         wait_for_message()
         time.sleep(1)
