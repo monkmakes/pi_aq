@@ -2,46 +2,21 @@ import serial
 import threading
 import time
 from guizero import App, Text, PushButton, CheckBox, Slider, TextBox
-
-temp = 0
-e_co2 = 0
-ser = serial.Serial("/dev/ttyS0", 9600)
-
-def clear_console():
-    console.value = ""
+from aq import AQ
 
 app = App(title="Air Quality", width=500, height=300, layout="grid")
-
-def send(message):
-    ser.write(bytes(message+"\n", 'utf-8'))
-
-def wait_for_message():
-    global temp, e_co2
-    time.sleep(0.1) # give attiny time to respond
-    incoming_message = str(ser.readline()[:-2].decode("utf-8"))  # remove LF, CR turn into string
-    message_parts = incoming_message.split("=")
-    if len(message_parts) == 2:
-        code, value = message_parts
-        if code == "t":
-            temp = float(value)
-        elif code == "c":
-            e_co2 = float(value)
+aq = AQ()
 
 def update_readings():
     while True:
-        send("t")
-        wait_for_message()
-        time.sleep(0.1) # give attiny time to respond
-        send("c")
-        wait_for_message()
-        time.sleep(1)
-        temp_c_field.value = str(temp)
-        eco2_field.value = str(e_co2)
+        temp_c_field.value = str(aq.get_temp())
+        eco2_field.value = str(aq.get_eco2())
+        time.sleep(0.5)
 
 t1 = threading.Thread(target=update_readings)
 t1.start()
 
-send("a")
+aq.leds_automatic()
 
 Text(app, text="Temp (C)", grid=[0,0], size=20)
 temp_c_field = Text(app, text="-", grid=[1,0], size=100)
