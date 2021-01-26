@@ -6,6 +6,8 @@ aq.leds_automatic()
 
 interval = int(input("Enter interval between readings (seconds):"))
 file_name = input("Enter filename:")
+current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+print("Logging started at: " + current_time)
 print("Press CTRL-c to end logging")
 
 f = open(file_name, "w")
@@ -30,4 +32,5 @@ try:
 except:
     f.close()
     print("\nLogging to file " + file_name + " complete")
-
+    current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    print("Logging ended at: " + current_time)
