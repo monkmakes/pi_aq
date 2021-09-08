@@ -1,0 +1,75 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<script>
+
+function draw(labels,values) {
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: values,
+  },
+  options: {
+    scales: {
+      A:{
+        type:'linear', 
+        position: "left",  
+        min:0,max:1600, 
+        backgroundColor:'lightgreen',
+        },
+      B:{
+        type:'linear', 
+        position: "right", 
+        min:0,max:40,   
+        backgroundColor:'#acace3',
+        }
+    }
+  }
+});
+
+
+}
+
+function loadData(url) {
+  fetch(url)
+  .then(r => r.text())
+  .then(file => {
+    var lines  = file.split("\n").slice(1);
+    var step  = Math.max(1,Math.floor(lines.length/400));
+    var start = Math.max(0,lines.length-1-step*400);
+
+    var filtered = []
+    for (var i=start; i < lines.length; i=i+step) {
+       filtered.push(lines[i]);
+    }
+   
+    var labels = filtered.map(row => row.split("\t")[0]);
+    var values = [
+      {label:"eCO2",yAxisID:"A",data:filtered.map(row => +row.split("\t")[2]), backgroundColor:'#669966',borderColor:'#66cc66'},
+      {label:"temp",yAxisID:"B",data:filtered.map(row => +row.split("\t")[1]), backgroundColor:'#666699',borderColor:'#6666cc'}
+    ];
+
+    draw(labels,values)
+  });
+}
+
+function load() {
+  var file=new URLSearchParams(location.search).get("file");
+  if (!file) {
+    file = prompt("A data file (/url) is needed:", "data.txt");
+    const url = new URL(window.location);
+    url.searchParams.set('file', file);
+    window.history.pushState({}, '', url);
+  }
+  loadData(file);
+}
+</script>
+
+</head>
+<body onload="load()">
+<style>
+canvas { height: 100px; }
+</style>
+<canvas id="myChart" width="1000" height="400"></canvas>

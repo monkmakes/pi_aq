@@ -28,6 +28,7 @@ try:
             f.write(t + "\t")
             f.write(temp_c + "\t")
             f.write(eco2 + "\n")
+            f.flush()
             print(t + "\t" + temp_c + "\t" + str(int(eco2)))
 except:
     f.close()
