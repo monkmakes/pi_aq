@@ -3,6 +3,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 <script>
 
+var params = new URLSearchParams(location.search);
+
 function draw(labels,values) {
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -16,7 +18,7 @@ var myChart = new Chart(ctx, {
       A:{
         type:'linear', 
         position: "left",  
-        min:0,max:1600, 
+        min:0,max:params.get("eco2max") || 1600, 
         backgroundColor:'lightgreen',
         },
       B:{
