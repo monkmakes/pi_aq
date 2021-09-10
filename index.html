@@ -18,7 +18,7 @@ var myChart = new Chart(ctx, {
       A:{
         type:'linear', 
         position: "left",  
-        min:0,max:params.get("eco2max") || 1600, 
+        min:0,max:parseInt(params.get("eco2max")) || 1600, 
         backgroundColor:'lightgreen',
         },
       B:{
@@ -39,8 +39,15 @@ function loadData(url) {
   .then(r => r.text())
   .then(file => {
     var lines  = file.split("\n").slice(1);
-    var step  = Math.max(1,Math.floor(lines.length/400));
-    var start = Math.max(0,lines.length-1-step*400);
+
+    var mostRecent = params.get("mostRecent");
+    var numSamples = parseInt(params.get("numSamples") || 400);
+
+    if (mostRecent) {
+      lines = lines.slice(Math.max(0, lines.length - numSamples));
+    }
+    var step  = Math.max(1,Math.floor(lines.length/numSamples));
+    var start = Math.max(0,lines.length-1-step*numSamples);
 
     var filtered = []
     for (var i=start; i < lines.length; i=i+step) {
@@ -66,6 +73,12 @@ function load() {
     window.history.pushState({}, '', url);
   }
   loadData(file);
+}
+
+
+var refreshSecs = params.get("refreshSecs") || 0;
+if (refreshSecs) {
+  setTimeout(()=>{location.reload();}, refreshSecs* 1000);
 }
 </script>
 
