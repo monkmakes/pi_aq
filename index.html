@@ -1,0 +1,90 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<script>
+
+var params = new URLSearchParams(location.search);
+
+function draw(labels,values) {
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: values,
+  },
+  options: {
+    scales: {
+      A:{
+        type:'linear', 
+        position: "left",  
+        min:0,max:parseInt(params.get("eco2max")) || 1600, 
+        backgroundColor:'lightgreen',
+        },
+      B:{
+        type:'linear', 
+        position: "right", 
+        min:0,max:40,   
+        backgroundColor:'#acace3',
+        }
+    }
+  }
+});
+
+
+}
+
+function loadData(url) {
+  fetch(url)
+  .then(r => r.text())
+  .then(file => {
+    var lines  = file.split("\n").slice(1);
+
+    var mostRecent = params.get("mostRecent");
+    var numSamples = parseInt(params.get("numSamples") || 400);
+
+    if (mostRecent) {
+      lines = lines.slice(Math.max(0, lines.length - numSamples));
+    }
+    var step  = Math.max(1,Math.floor(lines.length/numSamples));
+    var start = Math.max(0,lines.length-1-step*numSamples);
+
+    var filtered = []
+    for (var i=start; i < lines.length; i=i+step) {
+       filtered.push(lines[i]);
+    }
+   
+    var labels = filtered.map(row => row.split("\t")[0]);
+    var values = [
+      {label:"eCO2",yAxisID:"A",data:filtered.map(row => +row.split("\t")[2]), backgroundColor:'#669966',borderColor:'#66cc66'},
+      {label:"temp",yAxisID:"B",data:filtered.map(row => +row.split("\t")[1]), backgroundColor:'#666699',borderColor:'#6666cc'}
+    ];
+
+    draw(labels,values)
+  });
+}
+
+function load() {
+  var file=new URLSearchParams(location.search).get("file");
+  if (!file) {
+    file = prompt("A data file (/url) is needed:", "data.txt");
+    const url = new URL(window.location);
+    url.searchParams.set('file', file);
+    window.history.pushState({}, '', url);
+  }
+  loadData(file);
+}
+
+
+var refreshSecs = params.get("refreshSecs") || 0;
+if (refreshSecs) {
+  setTimeout(()=>{location.reload();}, refreshSecs* 1000);
+}
+</script>
+
+</head>
+<body onload="load()">
+<style>
+canvas { height: 100px; }
+</style>
+<canvas id="myChart" width="1000" height="400"></canvas>
