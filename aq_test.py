@@ -60,7 +60,6 @@ def update_readings():
         eco2_field.value = str(e_co2)
 
 t1 = threading.Thread(target=update_readings)
-t1.start()
 
 def slider_changed(slider_value):
     send(str(slider_value))
@@ -82,4 +81,5 @@ Text(app, text="LED Level", grid=[0,3])
 slider = Slider(app, start=0, end=6, command=slider_changed, grid=[1,3])
 PushButton(app, text="Buzzer on", command=buzzer_on, grid=[0,4])
 PushButton(app, text="Buzzer off", command=buzzer_off, grid=[1,4])
+t1.start()
 app.display()
