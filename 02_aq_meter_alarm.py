@@ -23,7 +23,6 @@ def update_readings(): # update fields with new temp and eCO2 readings
         time.sleep(0.5)
 
 t1 = threading.Thread(target=update_readings)
-t1.start() # start the thread that updates the readings
 
 aq.leds_automatic()
 
