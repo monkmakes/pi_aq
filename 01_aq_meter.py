@@ -14,7 +14,6 @@ def update_readings(): # update fields with new temp and eCO2 readings
         time.sleep(0.5)
 
 t1 = threading.Thread(target=update_readings)
-t1.start() # start the thread that updates the readings
 
 aq.leds_automatic()
 
@@ -23,4 +22,5 @@ Text(app, text="Temp (C)", grid=[0,0], size=20)
 temp_c_field = Text(app, text="-", grid=[1,0], size=100)
 Text(app, text="eCO2 (ppm)", grid=[0,1], size=20)
 eco2_field = Text(app, text="-", grid=[1,1], size=100)
+t1.start() # start the thread that updates the readings
 app.display()
