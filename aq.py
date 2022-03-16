@@ -8,6 +8,7 @@ class AQ:
     temp = 0
     eco2 = 0
     ser = None
+    delay_period = 0.1
 
     def __init__(self):
          self.ser = serial.Serial("/dev/ttyS0", 9600)
@@ -45,9 +46,10 @@ class AQ:
 
     def send(self, message):
         self.ser.write(bytes(message+"\n", 'utf-8'))
+        time.sleep(delay_period)
 
     def _wait_for_message(self):
-        time.sleep(0.1) # give attiny time to respond
+        time.sleep(delay_period) # give attiny time to respond
         incoming_message = str(self.ser.readline()[:-2].decode("utf-8"))  # remove LF, CR turn into string
         message_parts = incoming_message.split("=")
         if len(message_parts) == 2:
@@ -56,5 +58,6 @@ class AQ:
                 self.temp = float(value)
             elif code == "c":
                 self.eco2 = float(value)
+        
 
 
