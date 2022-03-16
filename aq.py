@@ -28,6 +28,12 @@ class AQ:
     def leds_automatic(self):
         self.send("a")
 
+    def calibrate_400(self):
+        self.send("k")
+
+    def reset_calibration(self):
+        self.send("K")
+
     def set_led_level(self, slider_value):
         self.send(str(slider_value))
 
