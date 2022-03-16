@@ -46,10 +46,10 @@ class AQ:
 
     def send(self, message):
         self.ser.write(bytes(message+"\n", 'utf-8'))
-        time.sleep(delay_period)
+        time.sleep(self.delay_period)
 
     def _wait_for_message(self):
-        time.sleep(delay_period) # give attiny time to respond
+        time.sleep(self.delay_period) # give attiny time to respond
         incoming_message = str(self.ser.readline()[:-2].decode("utf-8"))  # remove LF, CR turn into string
         message_parts = incoming_message.split("=")
         if len(message_parts) == 2:
