@@ -4,6 +4,7 @@ aq = AQ()
 print("Calibrate sensor")
 print("================")
 print("Only for Air Quaility for Raspbewrry Pi boards of version 1e and later")
+print("Current eCO2 reading: " + str(aq.get_eco2()))
 print("Options")
 print("1. Calibrate to 400 ppm")
 print("2. Reset to factory default")
@@ -14,6 +15,7 @@ if (option == '1') :
     if (confirm == 'Y' or confirm == 'y'):
         aq.calibrate_400()
         print('Sensor calibrated')
+        print("Current eCO2 reading: " + str(aq.get_eco2()))
     else:
         print('Cancelled calibration')
 elif (option == '2') :
@@ -21,6 +23,7 @@ elif (option == '2') :
     if (confirm == 'Y' or confirm == 'y'):
         aq.reset_calibration()
         print('Sensor set to factory default')
+        print("Current eCO2 reading: " + str(aq.get_eco2()))
     else:
         print('Cancelled calibration')
 else:
