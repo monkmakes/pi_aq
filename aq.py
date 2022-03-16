@@ -58,6 +58,8 @@ class AQ:
                 self.temp = float(value)
             elif code == "c":
                 self.eco2 = float(value)
+                if self.eco2 < 0:
+                    self.eco2 = 0
         
 
 
