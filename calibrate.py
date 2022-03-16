@@ -1,3 +1,4 @@
+import time
 from aq import AQ
 
 aq = AQ()
@@ -18,6 +19,7 @@ while True:
         confirm = input("Calibrate? (Y/N)")
         if (confirm == 'Y' or confirm == 'y'):
             aq.calibrate_400()
+            time.sleep(2)
             print('Sensor calibrated')
         else:
             print('Cancelled calibration')
@@ -25,6 +27,7 @@ while True:
         confirm = input("Reset calibration to factory default? (Y/N)")
         if (confirm == 'Y' or confirm == 'y'):
             aq.reset_calibration()
+            time.sleep(2)
             print('Sensor set to factory default')
         else:
             print('Cancelled calibration')
