@@ -6,7 +6,7 @@ from guizero import App, Text, PushButton, CheckBox, Slider, TextBox
 
 temp = 0
 e_co2 = 0
-ser = serial.Serial("/dev/ttyS0", 9600)
+ser = serial.Serial("/dev/serial0", 9600)
 
 def clear_console():
     console.value = ""

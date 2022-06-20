@@ -11,7 +11,7 @@ class AQ:
     delay_period = 0.1
 
     def __init__(self):
-         self.ser = serial.Serial("/dev/ttyS0", 9600)
+         self.ser = serial.Serial("/dev/serial0", 9600)
 
     def get_eco2(self):
         self.send("c")
