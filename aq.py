@@ -7,6 +7,8 @@ class AQ:
 
     temp = 0
     eco2 = 0
+    raw = 0
+    version = ""
     ser = None
     delay_period = 0.1
 
@@ -44,6 +46,16 @@ class AQ:
     def buzzer_off(self):
         self.send("q")
 
+    def firmware(self):
+        self.send("v")
+        self._wait_for_message()
+        return self.version
+
+    def get_raw(self):
+        self.send("r")
+        self._wait_for_message()
+        return self.raw
+
     def send(self, message):
         self.ser.write(bytes(message+"\n", 'utf-8'))
         time.sleep(self.delay_period)
@@ -60,6 +72,10 @@ class AQ:
                 self.eco2 = float(value)
                 if self.eco2 < 0:
                     self.eco2 = 0
+            elif code == "r":
+                self.raw = float(value)
+            elif code == "v":
+                self.version = value
         
 
 
