@@ -74,7 +74,7 @@ class AQ:
                     self.eco2 = 0
             elif code == "r":
                 self.raw = float(value)
-            elif code == "v":
+            elif code == "Firmware version":
                 self.version = value
         
 
