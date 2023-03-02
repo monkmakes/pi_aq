@@ -17,7 +17,7 @@ def calibrate():
 def reset_calibrate():
     aq.reset_calibration()
 
-app = App(title="Raspberry Pi Calibrator", width=300, height=300, layout="grid")
+app = App(title="Raspberry Pi Calibrator", width=300, height=150, layout="grid")
 PushButton(app, text="Calibrate", command=calibrate, grid=[0,7])
 PushButton(app, text="Factory Reset", command=reset_calibrate, grid=[1,7])
 

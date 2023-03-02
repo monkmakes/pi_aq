@@ -6,9 +6,6 @@ aq.leds_automatic()
 
 interval = int(input("Enter interval between readings (seconds):"))
 file_name = input("Enter filename:")
-
-auto_cal = input("Auto-calibrate at 2:00 AM (Y/N)?")
-
 current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Logging started at: " + current_time)
 print("Press CTRL-c to end logging")
@@ -32,11 +29,6 @@ try:
             f.write(temp_c + "\t")
             f.write(eco2 + "\n")
             print(t + "\t" + temp_c + "\t" + str(int(eco2)))
-        tm = time.localtime()
-        if auto_cal.upper() == 'Y' and tm.tm_hour == 2 and tm.tm_min == 0 and tm.tm_sec == 0 :
-            print("recalibrating")
-            aq.calibrate_400()
-            time.sleep(1000)
 except:
     f.close()
     print("\nLogging to file " + file_name + " complete")
